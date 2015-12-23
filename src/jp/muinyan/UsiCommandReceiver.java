@@ -24,6 +24,8 @@ public class UsiCommandReceiver {
 
 	private Runnable onIsReady;
 
+	private Runnable onStop;
+
 	public UsiCommandReceiver(InputStream in) {
 
 		this.gui = new BufferedReader(new InputStreamReader(in));
@@ -58,6 +60,10 @@ public class UsiCommandReceiver {
 
 					call(onSetOption, name, value);
 				}
+
+				if(command.equals("stop")) {
+					call(onStop);
+				}
 			}
 
 		} catch (IOException e) {
@@ -91,6 +97,14 @@ public class UsiCommandReceiver {
 	 */
 	public void setOnSetOption(BiConsumer<String, String> callback) {
 		this.onSetOption = callback;
+	}
+
+	/**
+	 * コマンド "stop" に対するコールバックを設定します。
+	 * @param callback
+	 */
+	public void setOnStop(Runnable callback) {
+		this.onStop = callback;
 	}
 
 	/**
