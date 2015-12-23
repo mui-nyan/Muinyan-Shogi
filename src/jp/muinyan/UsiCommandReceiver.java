@@ -27,6 +27,8 @@ public class UsiCommandReceiver {
 
 	private Optional<Runnable> onStop;
 
+	private Optional<Runnable> onQuit;
+
 	public UsiCommandReceiver(InputStream in) {
 
 		this.gui = new BufferedReader(new InputStreamReader(in));
@@ -66,6 +68,10 @@ public class UsiCommandReceiver {
 
 				if (command.equals("stop")) {
 					onStop.ifPresent(c -> c.run());
+				}
+
+				if (command.equals("quit")) {
+					onQuit.ifPresent(c -> c.run());
 				}
 			}
 
@@ -109,5 +115,13 @@ public class UsiCommandReceiver {
 	 */
 	public void setOnStop(Runnable callback) {
 		this.onStop = Optional.ofNullable(callback);
+	}
+
+	/**
+	 * コマンド "quit" に対するコールバックを設定します。
+	 * @param callback
+	 */
+	public void setOnQuit(Runnable callback) {
+		this.onQuit = Optional.ofNullable(callback);
 	}
 }
