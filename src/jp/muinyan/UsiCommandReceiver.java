@@ -17,6 +17,8 @@ public class UsiCommandReceiver {
 
 	private Runnable onUsi;
 
+	private Runnable onIsReady;
+
 	public UsiCommandReceiver(InputStream in) {
 
 		this.gui = new BufferedReader(new InputStreamReader(in));
@@ -37,6 +39,10 @@ public class UsiCommandReceiver {
 				if (command.equals("usi")) {
 					call(onUsi);
 				}
+
+				if (command.equals("isready")) {
+					call(onIsReady);
+				}
 			}
 
 		} catch (IOException e) {
@@ -52,6 +58,15 @@ public class UsiCommandReceiver {
 	 */
 	public void setOnUsi(Runnable callback) {
 		this.onUsi = callback;
+	}
+
+	/**
+	 * コマンド "isready" に対するコールバックを設定します。
+	 *
+	 * @param callback
+	 */
+	public void setOnIsReady(Runnable callback) {
+		this.onIsReady = callback;
 	}
 
 	private void call(Runnable runnable) {
