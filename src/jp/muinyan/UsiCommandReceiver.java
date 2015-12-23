@@ -1,4 +1,5 @@
 package jp.muinyan;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,10 @@ public class UsiCommandReceiver {
 		try {
 			while (true) {
 				String command = gui.readLine();
+
+				if (command == null) {
+					break;
+				}
 
 				if (command.equals("usi")) {
 					call(onUsi);
