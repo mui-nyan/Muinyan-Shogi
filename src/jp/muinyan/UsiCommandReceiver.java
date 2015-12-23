@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,13 +19,13 @@ public class UsiCommandReceiver {
 
 	private BufferedReader gui;
 
-	private Runnable onUsi;
+	private Optional<Runnable> onUsi;
 
-	private BiConsumer<String, String> onSetOption;
+	private Optional<BiConsumer<String, String>> onSetOption;
 
-	private Runnable onIsReady;
+	private Optional<Runnable> onIsReady;
 
-	private Runnable onStop;
+	private Optional<Runnable> onStop;
 
 	public UsiCommandReceiver(InputStream in) {
 
@@ -44,25 +45,27 @@ public class UsiCommandReceiver {
 				}
 
 				if (command.equals("usi")) {
-					call(onUsi);
+					onUsi.ifPresent(r -> r.run());
 				}
 
 				if (command.equals("isready")) {
-					call(onIsReady);
+					onIsReady.ifPresent(c -> c.run());
 				}
 
 				if (command.startsWith("setoption name")) {
-					Pattern p = Pattern.compile("setoption name (.+) (.+)");
-					Matcher mat = p.matcher(command);
 
-					String name = mat.group(1);
-					String value = mat.group(2);
+					onSetOption.ifPresent(c -> {
+						Pattern p = Pattern.compile("setoption name (.+) (.+)");
+						Matcher mat = p.matcher(command);
 
-					call(onSetOption, name, value);
+						String name = mat.group(1);
+						String value = mat.group(2);
+						c.accept(name, value);
+					});
 				}
 
-				if(command.equals("stop")) {
-					call(onStop);
+				if (command.equals("stop")) {
+					onStop.ifPresent(c -> c.run());
 				}
 			}
 
@@ -78,7 +81,7 @@ public class UsiCommandReceiver {
 	 * @param callback
 	 */
 	public void setOnUsi(Runnable callback) {
-		this.onUsi = callback;
+		this.onUsi = Optional.ofNullable(callback);
 	}
 
 	/**
@@ -87,7 +90,7 @@ public class UsiCommandReceiver {
 	 * @param callback
 	 */
 	public void setOnIsReady(Runnable callback) {
-		this.onIsReady = callback;
+		this.onIsReady = Optional.ofNullable(callback);
 	}
 
 	/**
@@ -96,31 +99,15 @@ public class UsiCommandReceiver {
 	 * @param callback
 	 */
 	public void setOnSetOption(BiConsumer<String, String> callback) {
-		this.onSetOption = callback;
+		this.onSetOption = Optional.ofNullable(callback);
 	}
 
 	/**
 	 * コマンド "stop" に対するコールバックを設定します。
+	 *
 	 * @param callback
 	 */
 	public void setOnStop(Runnable callback) {
-		this.onStop = callback;
-	}
-
-	/**
-	 * 引数で渡されたRunnableを実行します。nullの場合は何もしません。
-	 * @param runnable
-	 */
-	private void call(Runnable runnable) {
-		if (runnable != null) {
-			runnable.run();
-		}
-	}
-
-	private <T, U> void call(BiConsumer<T, U> biConsumer, T value1, U value2) {
-
-		if (biConsumer != null) {
-			biConsumer.accept(value1, value2);
-		}
+		this.onStop = Optional.ofNullable(callback);
 	}
 }
