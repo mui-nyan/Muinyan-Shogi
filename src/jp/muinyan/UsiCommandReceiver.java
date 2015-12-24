@@ -38,6 +38,8 @@ public class UsiCommandReceiver {
 
 	private Optional<Runnable> onQuit;
 
+	private Optional<Consumer<GameResult>> onGameOver;
+
 	public UsiCommandReceiver(InputStream in) {
 
 		this.gui = new BufferedReader(new InputStreamReader(in));
@@ -100,6 +102,11 @@ public class UsiCommandReceiver {
 
 				if (command.equals("quit")) {
 					onQuit.ifPresent(c -> c.run());
+				}
+
+				if (command.equals("gameover")) {
+					String resultString = command.substring(9);
+					onGameOver.ifPresent(c -> c.accept(GameResult.valueOfIgnoreCase(resultString)));
 				}
 			}
 
@@ -188,5 +195,9 @@ public class UsiCommandReceiver {
 	 */
 	public void setOnQuit(Runnable callback) {
 		this.onQuit = Optional.ofNullable(callback);
+	}
+
+	public void setOnGameOver(Consumer<GameResult> callback) {
+		this.onGameOver = Optional.ofNullable(callback);
 	}
 }
