@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ public class UsiCommandReceiver {
 
 	private Optional<Runnable> onUsiNewGame;
 
-	private Optional<Runnable> onPosition;
+	private Optional<Consumer<String>> onPosition;
 
 	private Optional<Runnable> onStop;
 
@@ -63,7 +64,8 @@ public class UsiCommandReceiver {
 				}
 
 				if (command.equals("position")) {
-					onPosition.ifPresent(r -> r.run());
+					String value = command.substring(9);
+					onPosition.ifPresent(r -> r.accept(value));
 				}
 
 				if (command.startsWith("setoption name")) {
@@ -122,11 +124,11 @@ public class UsiCommandReceiver {
 	}
 
 	/**
-	 * コマンド "position" に対するコールバックを設定します。
+	 * コマンド "position" に対するコールバックを設定します。コールバックの引数はPositionStringです。
 	 *
 	 * @param callback
 	 */
-	public void setOnPosition(Runnable callback) {
+	public void setOnPosition(Consumer<String> callback) {
 		this.onPosition = Optional.ofNullable(callback);
 	}
 
