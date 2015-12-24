@@ -57,6 +57,7 @@ public class UsiCommandReceiver {
 				if (command.startsWith("setoption name")) {
 
 					onSetOption.ifPresent(c -> {
+						// TODO valueなしのパターンにも対応する
 						Pattern p = Pattern.compile("setoption name (.+) value (.+)");
 						Matcher mat = p.matcher(command);
 
