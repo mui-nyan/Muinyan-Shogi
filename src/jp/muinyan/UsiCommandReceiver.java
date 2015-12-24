@@ -27,6 +27,8 @@ public class UsiCommandReceiver {
 
 	private Optional<Runnable> onUsiNewGame;
 
+	private Optional<Runnable> onPosition;
+
 	private Optional<Runnable> onStop;
 
 	private Optional<Runnable> onQuit;
@@ -58,6 +60,10 @@ public class UsiCommandReceiver {
 
 				if (command.equals("usinewgame")) {
 					onUsiNewGame.ifPresent(r -> r.run());
+				}
+
+				if (command.equals("position")) {
+					onPosition.ifPresent(r -> r.run());
 				}
 
 				if (command.startsWith("setoption name")) {
@@ -108,10 +114,20 @@ public class UsiCommandReceiver {
 
 	/**
 	 * コマンド "usinewgame" に対するコールバックを設定します。
+	 *
 	 * @param callback
 	 */
 	public void setOnUsiNewGame(Runnable callback) {
 		this.onUsiNewGame = Optional.ofNullable(callback);
+	}
+
+	/**
+	 * コマンド "position" に対するコールバックを設定します。
+	 *
+	 * @param callback
+	 */
+	public void setOnPosition(Runnable callback) {
+		this.onPosition = Optional.ofNullable(callback);
 	}
 
 	/**
@@ -134,6 +150,7 @@ public class UsiCommandReceiver {
 
 	/**
 	 * コマンド "quit" に対するコールバックを設定します。
+	 *
 	 * @param callback
 	 */
 	public void setOnQuit(Runnable callback) {
