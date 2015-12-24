@@ -57,7 +57,7 @@ public class UsiCommandReceiver {
 				if (command.startsWith("setoption name")) {
 
 					onSetOption.ifPresent(c -> {
-						Pattern p = Pattern.compile("setoption name (.+) (.+)");
+						Pattern p = Pattern.compile("setoption name (.+) value (.+)");
 						Matcher mat = p.matcher(command);
 
 						String name = mat.group(1);
