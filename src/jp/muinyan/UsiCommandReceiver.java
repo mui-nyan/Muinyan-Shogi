@@ -32,6 +32,8 @@ public class UsiCommandReceiver {
 
 	private Optional<Consumer<String>> onGo;
 
+	private Optional<Runnable> onPonderHit;
+
 	private Optional<Runnable> onStop;
 
 	private Optional<Runnable> onQuit;
@@ -73,6 +75,10 @@ public class UsiCommandReceiver {
 				if (command.equals("go")) {
 					String goString = command.substring(3);
 					onGo.ifPresent(c -> c.accept(goString));
+				}
+
+				if (command.equals("ponderhit")) {
+					onPonderHit.ifPresent(r -> r.run());
 				}
 
 				if (command.startsWith("setoption name")) {
@@ -141,10 +147,20 @@ public class UsiCommandReceiver {
 
 	/**
 	 * コマンド "go" に対するコールバックを設定します。
+	 *
 	 * @param callback
 	 */
 	public void setOnGo(Consumer<String> callback) {
 		this.onGo = Optional.ofNullable(callback);
+	}
+
+	/**
+	 * コマンド "ponderhit" に対するコールバックを設定します。
+	 *
+	 * @param callback
+	 */
+	public void setOnPonderHit(Runnable callback) {
+		this.onPonderHit = Optional.ofNullable(callback);
 	}
 
 	/**
