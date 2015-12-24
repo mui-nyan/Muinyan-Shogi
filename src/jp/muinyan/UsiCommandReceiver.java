@@ -25,6 +25,8 @@ public class UsiCommandReceiver {
 
 	private Optional<Runnable> onIsReady;
 
+	private Optional<Runnable> onUsiNewGame;
+
 	private Optional<Runnable> onStop;
 
 	private Optional<Runnable> onQuit;
@@ -52,6 +54,10 @@ public class UsiCommandReceiver {
 
 				if (command.equals("isready")) {
 					onIsReady.ifPresent(c -> c.run());
+				}
+
+				if (command.equals("usinewgame")) {
+					onUsiNewGame.ifPresent(r -> r.run());
 				}
 
 				if (command.startsWith("setoption name")) {
@@ -98,6 +104,14 @@ public class UsiCommandReceiver {
 	 */
 	public void setOnIsReady(Runnable callback) {
 		this.onIsReady = Optional.ofNullable(callback);
+	}
+
+	/**
+	 * コマンド "usinewgame" に対するコールバックを設定します。
+	 * @param callback
+	 */
+	public void setOnUsiNewGame(Runnable callback) {
+		this.onUsiNewGame = Optional.ofNullable(callback);
 	}
 
 	/**
