@@ -22,7 +22,7 @@ public class Kyokumen {
 		int toY = moveString.charAt(3) - 'a';
 
 		// 成
-		boolean p = moveString.length() == 5 && moveString.charAt(4) == '+';
+		boolean evolution = moveString.length() == 5 && moveString.charAt(4) == '+';
 
 		// from,toのbitboard上の座標を求める
 		int fromRow = fromY / 3;
@@ -43,8 +43,8 @@ public class Kyokumen {
 				// TODO toの座標に駒があったら取る
 
 				// toの座標を1で上書き
-				// TODO 成はboardNumberを+1する
-				bitboard[boardNumber][toRow] |= (1 << toCol);
+				// 成はboardNumberを+1する
+				bitboard[evolution ? boardNumber + 1 : boardNumber][toRow] |= (1 << toCol);
 
 				break;
 			}
