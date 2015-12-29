@@ -6,7 +6,9 @@ public class Kyokumen {
 
 	public Kyokumen(String positionString) {
 
-		// positionString "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1 moves 5a6b 7g7f 3a3b";
+		// positionString
+		// "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1
+		// moves 5a6b 7g7f 3a3b";
 
 		String sfen = positionString.split(" ")[0];
 		bitboard = sfenToBitboard(sfen);
@@ -14,7 +16,14 @@ public class Kyokumen {
 		// TODO movesの解決
 	}
 
+	/**
+	 * sfen形式のmove文字列を解析して盤の操作を行います。形式は(移動元xy)(移動先xy)です。初手7六歩なら7g7f。成るときは末尾に+
+	 * を付けます。打つときは移動元xyの代わりに(駒の種類)*を付けます。先手2三金打ならG*2c。
+	 *
+	 * @param moveString
+	 */
 	public void move(String moveString) {
+
 
 		int fromX = Integer.parseInt(moveString.substring(0, 1)) - 1;
 		int fromY = moveString.charAt(1) - 'a';
