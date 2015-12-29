@@ -24,6 +24,7 @@ public class Kyokumen {
 	 */
 	public void move(String moveString) {
 
+		// TODO 打った場合の判定
 
 		int fromX = Integer.parseInt(moveString.substring(0, 1)) - 1;
 		int fromY = moveString.charAt(1) - 'a';
