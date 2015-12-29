@@ -36,15 +36,15 @@ public class Kyokumen {
 			if ((bitboard[boardNumber][fromRow] & (1 << fromCol)) != 0) {
 
 				// 操作する
-				// fromの座標を0で上書き
-				int mask = 0xFFFFFFFF ^ (1 << fromCol);
-				bitboard[boardNumber][fromRow] &= mask;
+				// fromの座標を0にする(1をxorで反転)
+				int mask = (1 << fromCol);
+				bitboard[boardNumber][fromRow] ^= mask;
 
 				// TODO toの座標に駒があったら取る
 
-				// toの座標を1で上書き
+				// toの座標を1にする(0をxorで反転)
 				// 成はboardNumberを+1する
-				bitboard[evolution ? boardNumber + 1 : boardNumber][toRow] |= (1 << toCol);
+				bitboard[evolution ? boardNumber + 1 : boardNumber][toRow] ^= (1 << toCol);
 
 				break;
 			}
