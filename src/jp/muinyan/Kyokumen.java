@@ -181,7 +181,7 @@ public class Kyokumen {
 	 *            bitboardの番号
 	 * @return 駒台の番号 エラーは負数
 	 */
-	private int boardNumberToKomadaiNumber(int boardNumber) {
+	private static int boardNumberToKomadaiNumber(int boardNumber) {
 
 		switch (boardNumber) {
 		case GOTE_PORN:
@@ -250,7 +250,7 @@ public class Kyokumen {
 	 *            駒の種類
 	 * @return 駒台の番号 エラーは負数
 	 */
-	private int charToKomadaiNumber(char koma) {
+	private static int charToKomadaiNumber(char koma) {
 
 		switch (koma) {
 		case 'P':
@@ -314,7 +314,7 @@ public class Kyokumen {
 	 *            成っているかどうか
 	 * @return bitboardの番号 エラーは負数
 	 */
-	private int charToBoardNumber(char koma, boolean evolution) {
+	private static int charToBoardNumber(char koma, boolean evolution) {
 
 		switch (koma) {
 		case 'P':
