@@ -147,8 +147,13 @@ public class Kyokumen {
 			String line = lines[rowIndex];
 
 			int cellCursol = 0;
+
+			// 成フラグ
+			boolean evolution = false;
+
 			for (int colIndex = 0; colIndex < line.length(); colIndex++) {
 				char cell = line.charAt(colIndex);
+
 
 				if (Character.isDigit(cell)) {
 					// 空白のときは何もせずにカーソルだけ進める
@@ -156,10 +161,17 @@ public class Kyokumen {
 
 					cellCursol += a;
 
+				} else if (cell == '+') {
+					// 成のときは成フラグを立てて次
+					evolution = true;
+
 				} else {
 
-					// TODO その駒を表す数値
-					int num = 0;
+					// その駒を表す数値
+					int num = charToBoardNumber(cell, evolution);
+
+					// 成フラグを下ろす
+					evolution = false;
 
 					// bitboardの (Koma, rowIndex colIndex) の位置に1を立てる
 					int boardNumber = rowIndex / 3;
