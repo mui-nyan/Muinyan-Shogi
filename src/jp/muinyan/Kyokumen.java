@@ -2,7 +2,39 @@ package jp.muinyan;
 
 public class Kyokumen {
 
+	private static final int SENTE_PORN = 0;
+	private static final int SENTE_PORN_P = 1;
+	private static final int SENTE_LANCE = 2;
+	private static final int SENTE_LANCE_P = 3;
+	private static final int SENTE_KNIGHT = 4;
+	private static final int SENTE_KNIGHT_P = 5;
+	private static final int SENTE_SILVER = 6;
+	private static final int SENTE_SILVER_P = 7;
+	private static final int SENTE_GOLD = 8;
+	private static final int SENTE_ROOK = 9;
+	private static final int SENTE_ROOK_P = 10;
+	private static final int SENTE_BISHOP = 11;
+	private static final int SENTE_BISHOP_P = 12;
+	private static final int SENTE_KING = 13;
+	private static final int GOTE_PORN = 14;
+	private static final int GOTE_PORN_P = 15;
+	private static final int GOTE_LANCE = 16;
+	private static final int GOTE_LANCE_P = 17;
+	private static final int GOTE_KNIGHT = 18;
+	private static final int GOTE_KNIGHT_P = 19;
+	private static final int GOTE_SILVER = 20;
+	private static final int GOTE_SILVER_P = 21;
+	private static final int GOTE_GOLD = 22;
+	private static final int GOTE_ROOK = 23;
+	private static final int GOTE_ROOK_P = 24;
+	private static final int GOTE_BISHOP = 25;
+	private static final int GOTE_BISHOP_P = 26;
+	private static final int GOTE_KING = 27;
+
 	private int[][] bitboard = new int[28][3];
+
+	// PLKSGRBplksgrb
+	private int[] komadai = new int[14];
 
 	public Kyokumen(String positionString) {
 
@@ -24,7 +56,9 @@ public class Kyokumen {
 	 */
 	public void move(String moveString) {
 
-		// TODO 打った場合の判定
+		if (moveString.charAt(2) == '*') {
+			// TODO 打った場合
+		}
 
 		int fromX = Integer.parseInt(moveString.substring(0, 1)) - 1;
 		int fromY = moveString.charAt(1) - 'a';
@@ -50,7 +84,18 @@ public class Kyokumen {
 				int mask = (1 << fromCol);
 				bitboard[boardNumber][fromRow] ^= mask;
 
-				// TODO toの座標に駒があったら取る
+				// toの座標に駒があったら取る
+				for (int checkTargetBoard = 0; checkTargetBoard < bitboard.length; checkTargetBoard++) {
+					if ((bitboard[boardNumber][toRow] & (1 << toCol)) != 0) {
+						// 敵の駒を発見
+
+						// 敵の駒を消す
+						bitboard[checkTargetBoard][toRow] ^= (1 << toCol);
+
+						// 自分の駒台に加える
+						komadai[getKomadai(checkTargetBoard)] += 1;
+					}
+				}
 
 				// toの座標を1にする(0をxorで反転)
 				// 成はboardNumberを+1する
@@ -88,7 +133,7 @@ public class Kyokumen {
 
 				} else {
 
-					// その駒を表す数値
+					// TODO その駒を表す数値
 					int num = 0;
 
 					// bitboardの (Koma, rowIndex colIndex) の位置に1を立てる
@@ -102,5 +147,23 @@ public class Kyokumen {
 		}
 
 		return bitboard;
+	}
+
+	/**
+	 * 「その駒を取った時に置く駒台」の番号を取得します。
+	 *
+	 * @param boardNumber
+	 * @return
+	 */
+	private int getKomadai(int boardNumber) {
+
+		switch (boardNumber) {
+		case GOTE_PORN:
+		case GOTE_PORN_P:
+			return 0;
+
+		default:
+			return -1;
+		}
 	}
 }
