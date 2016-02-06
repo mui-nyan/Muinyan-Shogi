@@ -42,10 +42,17 @@ public class Kyokumen {
 		// "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1
 		// moves 5a6b 7g7f 3a3b";
 
-		String sfen = positionString.split(" ")[0];
+		String[] elements = positionString.split(" ");
+
+		String sfen = elements[0];
 		bitboard = sfenToBitboard(sfen);
 
-		// TODO movesの解決
+		// TODO 持ち駒の解決
+
+		// movesの解決
+		for(int i = 5; i < elements.length; i++) {
+			analyzeMoveString(elements[i]);
+		}
 	}
 
 	/**
